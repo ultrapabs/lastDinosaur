@@ -1,0 +1,49 @@
+html, body, h1, section, ul, li {
+  background: transparent;
+  font-style: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  text-decoration: none;
+  font-weight: inherit;
+  color: inherit;
+  border: 0px;
+  padding: 0px;
+  margin: 0px;
+}
+
+.group:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+body{
+  font-family: sans-serif;
+}
+
+.game-title {
+  font-weight: bold;
+  font-size: 36px;
+  display: block;
+  margin: 20px;
+}
+
+ul, li {
+  list-style: none;
+  display: block;
+}
+
+li {
+  float: left;
+  background: blue;
+  height: 30px;
+  width: 30px;
+}
+
+.earth {
+  background: brown;
+}
+
+.dino {
+  background: green;
+}
