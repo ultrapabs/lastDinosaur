@@ -16,9 +16,9 @@
 
   View.prototype.moveDino = function (event) {
     if (event.keyCode === 37) {
-      console.log("left!");
+      this.board.dino.move('left');
     } else if (event.keyCode === 39) {
-      console.log("right!");
+      this.board.dino.move('right');
     }
   };
 
@@ -32,6 +32,8 @@
           html += '<li class="earth"></li>';
         } else if (board.earth[i][j] === 2) {
           html += '<li class="dino"></li>';
+        } else if (board.earth[i][j] === 3){
+            html += '<li class="meteor"></li>';
         } else {
           html += '<li></li>';
         }
@@ -42,7 +44,20 @@
   };
 
   View.prototype.step = function () {
-
+    if (this.board.counter >= 1200) {
+      this.board.meteor.fall();
+    } else if (this.board.counter >= 900 && this.board.counter % 2 === 0) {
+      this.board.meteor.fall();
+    } else if (this.board.counter >= 600 && this.board.counter < 900 && this.board.counter % 3 === 0) {
+      this.board.meteor.fall();
+    } else if (this.board.counter >= 300 && this.board.counter < 600 && this.board.counter % 4 === 0) {
+      this.board.meteor.fall();
+    } else if (this.board.counter < 300 && this.board.counter % 5 === 0) {
+      this.board.meteor.fall();
+    }
+    console.log(this.board.counter);
+    this.board.counter++;
+    this.renderEarth(this.board);
   };
 
 })();

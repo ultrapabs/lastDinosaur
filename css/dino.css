@@ -28,6 +28,10 @@ body{
   margin: 20px;
 }
 
+.last-dino {
+  padding: 0px 20px;
+}
+
 ul, li {
   list-style: none;
   display: block;
@@ -46,4 +50,8 @@ li {
 
 .dino {
   background: green;
+}
+
+.meteor {
+  background: red;
 }
