@@ -29,13 +29,16 @@ body{
   text-align: center;
 }
 
-.last-dino {d
+.last-dino {
   display: block;
   margin: auto;
+  padding: 10px;
   width: 600px;
+  height: 270px;
   border-left: 20px solid white;
   border-right: 20px solid white;
-  background: blue;
+  background: url(../img/dino_back.png);
+  /* http://www.dinosaurworldwide.com/ */
 }
 
 .ground {
@@ -51,11 +54,11 @@ body{
 ul, li {
   list-style: none;
   display: block;
+  vertical-align: bottom;
 }
 
 li {
   float: left;
-  background: blue;
   height: 30px;
   width: 30px;
 }
@@ -64,11 +67,12 @@ li {
   background: brown;
 }
 
-.dino {
-  background: green;
+.dino:after {
+  content: url(../img/dino2.png);
+  /* http://www.clipartpanda.com/categories/cute-dinosaur-clipart-black-and-white */
 }
 
-.meteor {
-  background: red;
-  border-radius: 50%;
+.meteor:after {
+  content: url(../img/fireball2.png);
+  /* http://imgbuddy.com/fireball-transparent-png.asp */
 }

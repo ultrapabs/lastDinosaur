@@ -15,7 +15,7 @@
 
   Dino.prototype.move = function (direction) {
     this.board.earth[this.pos[0]][this.pos[1]] = 0;
-    if (direction === 'right' && this.pos[1] < 20) {
+    if (direction === 'right' && this.pos[1] < 19) {
       this.pos[1] += 1;
     } else if (direction === 'left' && this.pos[1] > 0) {
       this.pos[1] -= 1;
@@ -112,7 +112,7 @@
         this.board.earth[this.pos[0]][this.pos[1] - 2] = 3;
         this.board.earth[this.pos[0] - 1][this.pos[1] + 1] = 3;
         this.board.earth[this.pos[0] - 1][this.pos[1] - 1] = 3;
-        this.board.earth[this.pos[0] - 1][this.pos[1]] = 3;  
+        this.board.earth[this.pos[0] - 1][this.pos[1]] = 3;
       }
       this.board.earth[this.pos[0]][this.pos[1]] = 3;
     }
