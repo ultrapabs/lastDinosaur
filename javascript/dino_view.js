@@ -25,12 +25,10 @@
   View.prototype.renderEarth = function (board) {
     var html = '';
 
-    for (var i = 0; i < board.earth.length; i++) {
+    for (var i = 1; i < board.earth.length; i++) {
       html += '<ul class="group">';
       for (var j = 0; j < board.earth[0].length; j++) {
-        if (board.earth[i][j] === 1) {
-          html += '<li class="earth"></li>';
-        } else if (board.earth[i][j] === 2) {
+        if (board.earth[i][j] === 2) {
           html += '<li class="dino"></li>';
         } else if (board.earth[i][j] === 3){
             html += '<li class="meteor"></li>';
@@ -44,20 +42,25 @@
   };
 
   View.prototype.step = function () {
-    if (this.board.counter >= 1200) {
-      this.board.meteor.fall();
-    } else if (this.board.counter >= 900 && this.board.counter % 2 === 0) {
-      this.board.meteor.fall();
-    } else if (this.board.counter >= 600 && this.board.counter < 900 && this.board.counter % 3 === 0) {
-      this.board.meteor.fall();
-    } else if (this.board.counter >= 300 && this.board.counter < 600 && this.board.counter % 4 === 0) {
-      this.board.meteor.fall();
-    } else if (this.board.counter < 300 && this.board.counter % 5 === 0) {
-      this.board.meteor.fall();
+
+    if (!this.board.dino.alive) {
+      alert("Ouch! Your score is " + this.board.counter + ".");
+      window.clearInterval(this.intervalId);
+    } else {
+      if (this.board.counter >= 1200) {
+        this.board.meteor.fall3();
+      } else if (this.board.counter >= 900 && this.board.counter % 2 === 0) {
+        this.board.meteor.fall2();
+      } else if (this.board.counter >= 600 && this.board.counter < 900 && this.board.counter % 3 === 0) {
+        this.board.meteor.fall2();
+      } else if (this.board.counter >= 300 && this.board.counter < 600 && this.board.counter % 4 === 0) {
+        this.board.meteor.fall();
+      } else if (this.board.counter < 300 && this.board.counter % 5 === 0) {
+        this.board.meteor.fall();
+      }
+      this.board.counter++;
+      this.renderEarth(this.board);
     }
-    console.log(this.board.counter);
-    this.board.counter++;
-    this.renderEarth(this.board);
   };
 
 })();

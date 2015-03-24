@@ -26,10 +26,26 @@ body{
   font-size: 36px;
   display: block;
   margin: 20px;
+  text-align: center;
 }
 
-.last-dino {
-  padding: 0px 20px;
+.last-dino {d
+  display: block;
+  margin: auto;
+  width: 600px;
+  border-left: 20px solid white;
+  border-right: 20px solid white;
+  background: blue;
+}
+
+.ground {
+  display: block;
+  margin: auto;
+  width: 600px;
+  height: 40px;
+  border-left: 20px solid white;
+  border-right: 20px solid white;
+  background: black;
 }
 
 ul, li {
@@ -54,4 +70,5 @@ li {
 
 .meteor {
   background: red;
+  border-radius: 50%;
 }

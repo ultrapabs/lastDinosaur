@@ -8,8 +8,9 @@
 
   var Dino = LastDinosaur.Dino = function (board) {
     this.board = board;
-    this.pos = [7,0];
-    this.board.earth[7][0] = 2;
+    this.alive = true;
+    this.pos = [9,0];
+    this.board.earth[9][0] = 2;
   };
 
   Dino.prototype.move = function (direction) {
@@ -35,22 +36,87 @@
   Meteor.prototype.fall = function () {
     this.board.earth[this.pos[0]][this.pos[1]] = 0;
     this.pos[0] += 1;
-    if (this.board.earth[this.pos[0]][this.pos[1]] === 2) {
-      this.board.collision();
-    } else if (this.board.earth[this.pos[0]][this.pos[1]] === 1) {
-      if (this.board.counter >= 600) {
-        this.board.earth[this.pos[0]][this.pos[1] + 1] = 0;
-        this.board.earth[this.pos[0]][this.pos[1] - 1] = 0;
-      }
+
+    if (this.pos[0] >= BOARD_HEIGHT) {
       this.board.generateMeteor();
+    } else if (this.board.earth[this.pos[0]][this.pos[1]] === 2) {
+      this.board.collision();
+      this.board.earth[this.pos[0]][this.pos[1]] = 3;
     } else {
-      if (this.board.earth[this.pos[0] + 1][this.pos[1]] === 1 && this.board.counter >= 600) {
+      this.board.earth[this.pos[0]][this.pos[1]] = 3;
+    }
+  };
+
+  Meteor.prototype.fall2 = function () {
+    this.board.earth[this.pos[0]][this.pos[1]] = 0;
+    this.pos[0] += 1;
+
+    if (this.pos[0] >= BOARD_HEIGHT) {
+      this.board.earth[this.pos[0] - 1][this.pos[1] + 1] = 0;
+      this.board.earth[this.pos[0] - 1][this.pos[1] - 1] = 0;
+      this.board.generateMeteor();
+    } else if ((this.board.earth[this.pos[0]][this.pos[1]] ||
+         this.board.earth[this.pos[0]][this.pos[1] + 1] ||
+         this.board.earth[this.pos[0]][this.pos[1] - 1])
+         === 2) {
+      this.board.collision();
+      this.board.earth[this.pos[0]][this.pos[1] + 1] = 3;
+      this.board.earth[this.pos[0]][this.pos[1] - 1] = 3;
+      this.board.earth[this.pos[0]][this.pos[1]] = 3;
+    } else {
+      if (this.pos[0] === BOARD_HEIGHT - 1) {
         this.board.earth[this.pos[0]][this.pos[1] + 1] = 3;
         this.board.earth[this.pos[0]][this.pos[1] - 1] = 3;
       }
       this.board.earth[this.pos[0]][this.pos[1]] = 3;
     }
-  };
+  }
+
+  Meteor.prototype.fall3 = function () {
+    this.board.earth[this.pos[0]][this.pos[1]] = 0;
+    this.pos[0] += 1;
+
+    if (this.pos[0] >= BOARD_HEIGHT) {
+      this.board.earth[this.pos[0] - 1][this.pos[1] + 1] = 0;
+      this.board.earth[this.pos[0] - 1][this.pos[1] - 1] = 0;
+      this.board.earth[this.pos[0] - 1][this.pos[1] + 2] = 0;
+      this.board.earth[this.pos[0] - 1][this.pos[1] - 2] = 0;
+      this.board.earth[this.pos[0] - 2][this.pos[1] + 1] = 0;
+      this.board.earth[this.pos[0] - 2][this.pos[1] - 1] = 0;
+      this.board.earth[this.pos[0] - 2][this.pos[1]] = 0;
+
+      this.board.generateMeteor();
+    } else if ((this.board.earth[this.pos[0]][this.pos[1]] ||
+         this.board.earth[this.pos[0]][this.pos[1] + 1] ||
+         this.board.earth[this.pos[0]][this.pos[1] - 1] ||
+         this.board.earth[this.pos[0]][this.pos[1] + 2] ||
+         this.board.earth[this.pos[0]][this.pos[1] - 2]
+         )
+         === 2) {
+      this.board.collision();
+      this.board.earth[this.pos[0]][this.pos[1] + 1] = 3;
+      this.board.earth[this.pos[0]][this.pos[1] - 1] = 3;
+      this.board.earth[this.pos[0]][this.pos[1] + 2] = 3;
+      this.board.earth[this.pos[0]][this.pos[1] - 2] = 3;
+      this.board.earth[this.pos[0] - 1][this.pos[1] + 1] = 3;
+      this.board.earth[this.pos[0] - 1][this.pos[1] - 1] = 3;
+      this.board.earth[this.pos[0] - 1][this.pos[1]] = 3;
+
+
+      this.board.earth[this.pos[0]][this.pos[1]] = 3;
+    } else {
+      if (this.pos[0] === BOARD_HEIGHT - 1) {
+        this.board.earth[this.pos[0]][this.pos[1] + 1] = 3;
+        this.board.earth[this.pos[0]][this.pos[1] - 1] = 3;
+        this.board.earth[this.pos[0]][this.pos[1] + 2] = 3;
+        this.board.earth[this.pos[0]][this.pos[1] - 2] = 3;
+        this.board.earth[this.pos[0] - 1][this.pos[1] + 1] = 3;
+        this.board.earth[this.pos[0] - 1][this.pos[1] - 1] = 3;
+        this.board.earth[this.pos[0] - 1][this.pos[1]] = 3;  
+      }
+      this.board.earth[this.pos[0]][this.pos[1]] = 3;
+    }
+  }
 
   var Board = LastDinosaur.Board = function () {
     this.counter = 1;
@@ -65,11 +131,7 @@
     for (var i = 0; i < BOARD_HEIGHT; i++) {
       earth.push([]);
       for (var j = 0; j < BOARD_WIDTH; j++) {
-        if (i > BOARD_HEIGHT - 3) {
-          earth[i].push(1);
-        } else {
-          earth[i].push(0);
-        }
+        earth[i].push(0);
       }
     }
 
@@ -77,7 +139,7 @@
   };
 
   Board.prototype.collision = function () {
-    alert("Ouch!");
+    this.dino.alive = false;
   };
 
   Board.prototype.generateMeteor = function () {
