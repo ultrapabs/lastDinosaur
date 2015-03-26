@@ -27,9 +27,14 @@
     }
   };
 
-  var Meteor = LastDinosaur.Meteor = function (board) {
+  var Meteor = LastDinosaur.Meteor = function (board, smart) {
     this.board = board;
-    posX = Math.floor(Math.random() * 20);
+    if (smart) {
+      var posX = this.board.dino.pos[1];
+    } else {
+      var posX =  Math.floor(Math.random() * 20);
+    }
+
     this.pos = [0, posX];
   };
 
@@ -116,13 +121,24 @@
       }
       this.board.earth[this.pos[0]][this.pos[1]] = 3;
     }
+  };
+
+  Meteor.prototype.explode = function (type) {
+    if (type === "medium") {
+
+    }
+    if (type === "big") {
+
+    }
+
   }
 
   var Board = LastDinosaur.Board = function () {
     this.counter = 1;
+    this.smartMeteor = true;
     this.earth = Board.freshEarth();
     this.dino = new LastDinosaur.Dino(this);
-    this.meteor = new LastDinosaur.Meteor(this);
+    this.generateMeteor();
   };
 
   Board.freshEarth = function () {
@@ -143,12 +159,13 @@
   };
 
   Board.prototype.generateMeteor = function () {
-    this.meteor = new Meteor(this);
-  };
-
-  Board.prototype.generateSmartMeteor = function () {
-    this.meteor = new Meteor(this);
-    this.meteor.pos[1] = this.dino.pos[1];
+    if (this.smartMeteor) {
+      this.meteor = new Meteor(this, true);
+      this.smartMeteor = false;
+    } else {
+      this.meteor = new Meteor(this, false);
+      this.smartMeteor = true;
+    }
   };
 
 })();
