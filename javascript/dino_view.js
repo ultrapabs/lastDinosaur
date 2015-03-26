@@ -1,5 +1,5 @@
 (function(){
-  if(typeof window.LastDinosaur === "undefined"){
+  if(typeof window.LastDinosaur === 'undefined'){
     window.LastDinosaur = {};
   }
 
@@ -8,8 +8,7 @@
     this.bestScore = 0;
     this.speed = 0;
 
-    $(window).on("keydown", this.moveDino.bind(this));
-    $(window).on("keydown", this.userRestart.bind(this));
+    $(window).on('keydown', this.moveDino.bind(this));
 
     this.selectDifficulty();
   };
@@ -48,8 +47,8 @@
   View.prototype.updateScore = function (score) {
     if (score >= this.bestScore) { this.bestScore = score; }
 
-    $(".score").html('<li class="current">Current Score: ' + score + '</li>');
-    $(".score").append('<li class="best">Best Score: ' + this.bestScore + '</li>');
+    $('.score').html('<li class="current">Current Score: ' + score + '</li>');
+    $('.score').append('<li class="best">Best Score: ' + this.bestScore + '</li>');
   };
 
   View.prototype.resetGame = function () {
@@ -62,7 +61,7 @@
   View.prototype.selectDifficulty = function () {
     this.$el.html(this.difficultyMessage());
 
-    $(window).on("keydown", this.userDifficulty.bind(this));
+    $(window).on('keydown', this.userDifficulty.bind(this));
     this.intervalId = window.setInterval(function () {}, 100);
   };
 
@@ -76,7 +75,7 @@
         this.speed = View.HARD_SPEED;
       }
 
-      $(window).unbind("keydown", this.selectDifficulty.bind(this));
+      $(window).off('keydown', this.selectDifficulty.bind(this));
       window.clearInterval(this.intervalId);
       this.resetGame();
     }
@@ -90,12 +89,15 @@
     html += '</ul>';
     this.$el.html(html);
 
+    $(window).on('keydown', this.userRestart.bind(this));
+
     this.intervalId = window.setInterval(function(){}, 100);
   };
 
   View.prototype.userRestart = function (event) {
-    if (event.keyCode === 80 && !this.board.dino.alive) {
+    if (event.keyCode === 80) {
       window.clearInterval(this.intervalId);
+      $(window).off('keydown', this.userRestart.bind(this));
       this.selectDifficulty();
     }
   };
@@ -134,19 +136,7 @@
     if (!this.board.dino.alive) {
       this.gameOver();
     } else {
-      if (this.board.counter < 150 && this.board.counter % 5 === 0) {
-        this.board.meteor.fall('small');
-      } else if (this.board.counter >= 150 && this.board.counter < 300 && this.board.counter % 4 === 0) {
-        this.board.meteor.fall('small');
-      } else if (this.board.counter >= 300 && this.board.counter < 450 && this.board.counter % 3 === 0) {
-        this.board.meteor.fall('medium');
-      } else if (this.board.counter >= 450 && this.board.counter % 2 === 0) {
-        this.board.meteor.fall('big');
-      } else if (this.board.counter >= 600) {
-        this.board.meteor.fall('big');
-      }
-
-      this.board.counter++;
+      this.board.step();
       this.updateScore(this.board.counter);
       this.renderEarth(this.board);
     }
