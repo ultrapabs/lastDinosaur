@@ -114,7 +114,7 @@
       html += "Littlefoot's mom still did better than you.";
     } else {
       html += 'Paleontologists will sing of your endeavors. Rejoice!';
-      if ( this.speed <= View.NORMAL_SPEED ) {
+      if ( this.speed > View.HARD_SPEED ) {
         html += '</li><li>Now try a harder mode.</li>'
       }
     }

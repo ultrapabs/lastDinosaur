@@ -31,16 +31,17 @@
     }
   };
 
-  Meteor.prototype.checkCollision = function (type) {
+  Meteor.prototype.checkCollision = function () {
     if (this.board.earth[this.pos[0]][this.pos[1]] === 2){
       return true;
-    } else if (type === 'medium' &&
-        (this.board.earth[this.pos[0]][this.pos[1] + 1] ||
-         this.board.earth[this.pos[0]][this.pos[1] - 1]) === 2) {
+    } else if (((this.type === 'medium') ||
+                (this.type === 'big')) &&
+                (this.board.earth[this.pos[0]][this.pos[1] + 1] ||
+                 this.board.earth[this.pos[0]][this.pos[1] - 1]) === 2) {
       return true;
-    } else if (type === 'big' &&
+    } else if ((this.type === 'big' &&
         (this.board.earth[this.pos[0]][this.pos[1] + 2] ||
-         this.board.earth[this.pos[0]][this.pos[1] - 2]) === 2) {
+         this.board.earth[this.pos[0]][this.pos[1] - 2]) === 2)) {
       return true;
     }
     return false;
