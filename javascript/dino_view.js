@@ -134,16 +134,16 @@
     if (!this.board.dino.alive) {
       this.gameOver();
     } else {
-      if (this.board.counter >= 600) {
-        this.board.meteor.fall3();
-      } else if (this.board.counter >= 450 && this.board.counter % 2 === 0) {
-        this.board.meteor.fall2();
-      } else if (this.board.counter >= 300 && this.board.counter < 450 && this.board.counter % 3 === 0) {
-        this.board.meteor.fall2();
+      if (this.board.counter < 150 && this.board.counter % 5 === 0) {
+        this.board.meteor.fall('small');
       } else if (this.board.counter >= 150 && this.board.counter < 300 && this.board.counter % 4 === 0) {
-        this.board.meteor.fall();
-      } else if (this.board.counter < 150 && this.board.counter % 5 === 0) {
-        this.board.meteor.fall();
+        this.board.meteor.fall('small');
+      } else if (this.board.counter >= 300 && this.board.counter < 450 && this.board.counter % 3 === 0) {
+        this.board.meteor.fall('medium');
+      } else if (this.board.counter >= 450 && this.board.counter % 2 === 0) {
+        this.board.meteor.fall('big');
+      } else if (this.board.counter >= 600) {
+        this.board.meteor.fall('big');
       }
 
       this.board.counter++;

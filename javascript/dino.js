@@ -38,100 +38,88 @@
     this.pos = [0, posX];
   };
 
-  Meteor.prototype.fall = function () {
+  Meteor.prototype.fall = function (type) {
     this.board.earth[this.pos[0]][this.pos[1]] = 0;
     this.pos[0] += 1;
 
     if (this.pos[0] >= BOARD_HEIGHT) {
+      this.clearLanding(type);
       this.board.generateMeteor();
-    } else if (this.board.earth[this.pos[0]][this.pos[1]] === 2) {
-      this.board.collision();
-      this.board.earth[this.pos[0]][this.pos[1]] = 3;
     } else {
-      this.board.earth[this.pos[0]][this.pos[1]] = 3;
+      if (this.checkCollision(type)) { this.board.collision(); }
+
+      if (this.pos[0] === BOARD_HEIGHT - 1) { this.explode(type); }
+      this.renderMove();
     }
   };
-
-  Meteor.prototype.fall2 = function () {
-    this.board.earth[this.pos[0]][this.pos[1]] = 0;
-    this.pos[0] += 1;
-
-    if (this.pos[0] >= BOARD_HEIGHT) {
-      this.board.earth[this.pos[0] - 1][this.pos[1] + 1] = 0;
-      this.board.earth[this.pos[0] - 1][this.pos[1] - 1] = 0;
-      this.board.generateMeteor();
-    } else if ((this.board.earth[this.pos[0]][this.pos[1]] ||
-         this.board.earth[this.pos[0]][this.pos[1] + 1] ||
-         this.board.earth[this.pos[0]][this.pos[1] - 1])
-         === 2) {
-      this.board.collision();
-      this.board.earth[this.pos[0]][this.pos[1] + 1] = 3;
-      this.board.earth[this.pos[0]][this.pos[1] - 1] = 3;
-      this.board.earth[this.pos[0]][this.pos[1]] = 3;
-    } else {
-      if (this.pos[0] === BOARD_HEIGHT - 1) {
-        this.board.earth[this.pos[0]][this.pos[1] + 1] = 3;
-        this.board.earth[this.pos[0]][this.pos[1] - 1] = 3;
-      }
-      this.board.earth[this.pos[0]][this.pos[1]] = 3;
-    }
-  }
 
   Meteor.prototype.fall3 = function () {
     this.board.earth[this.pos[0]][this.pos[1]] = 0;
     this.pos[0] += 1;
+    var type = 'big';
 
     if (this.pos[0] >= BOARD_HEIGHT) {
-      this.board.earth[this.pos[0] - 1][this.pos[1] + 1] = 0;
-      this.board.earth[this.pos[0] - 1][this.pos[1] - 1] = 0;
-      this.board.earth[this.pos[0] - 1][this.pos[1] + 2] = 0;
-      this.board.earth[this.pos[0] - 1][this.pos[1] - 2] = 0;
-      this.board.earth[this.pos[0] - 2][this.pos[1] + 1] = 0;
-      this.board.earth[this.pos[0] - 2][this.pos[1] - 1] = 0;
-      this.board.earth[this.pos[0] - 2][this.pos[1]] = 0;
-
+      this.clearLanding(type);
       this.board.generateMeteor();
-    } else if ((this.board.earth[this.pos[0]][this.pos[1]] ||
-         this.board.earth[this.pos[0]][this.pos[1] + 1] ||
-         this.board.earth[this.pos[0]][this.pos[1] - 1] ||
-         this.board.earth[this.pos[0]][this.pos[1] + 2] ||
-         this.board.earth[this.pos[0]][this.pos[1] - 2]
-         )
-         === 2) {
-      this.board.collision();
+    } else {
+      if (this.checkCollision(type)) { this.board.collision(); }
+
+      if (this.pos[0] === BOARD_HEIGHT - 1) { this.explode(type); }
+      this.renderMove();
+    }
+  };
+
+  Meteor.prototype.checkCollision = function (type) {
+    if (this.board.earth[this.pos[0]][this.pos[1]] === 2){
+      return true;
+    } else if (type === 'medium' &&
+        (this.board.earth[this.pos[0]][this.pos[1] + 1] ||
+         this.board.earth[this.pos[0]][this.pos[1] - 1]) === 2) {
+      return true;
+    } else if (type === 'big' &&
+        (this.board.earth[this.pos[0]][this.pos[1] + 2] ||
+         this.board.earth[this.pos[0]][this.pos[1] - 2]) === 2) {
+      return true;
+    }
+    return false;
+  };
+
+  Meteor.prototype.renderMove = function () {
+    this.board.earth[this.pos[0]][this.pos[1]] = 3;
+  };
+
+  Meteor.prototype.explode = function (type) {
+
+    if (type === 'medium' || type === 'big') {
       this.board.earth[this.pos[0]][this.pos[1] + 1] = 3;
       this.board.earth[this.pos[0]][this.pos[1] - 1] = 3;
+    }
+    if (type === 'big') {
       this.board.earth[this.pos[0]][this.pos[1] + 2] = 3;
       this.board.earth[this.pos[0]][this.pos[1] - 2] = 3;
       this.board.earth[this.pos[0] - 1][this.pos[1] + 1] = 3;
       this.board.earth[this.pos[0] - 1][this.pos[1] - 1] = 3;
       this.board.earth[this.pos[0] - 1][this.pos[1]] = 3;
-
-
-      this.board.earth[this.pos[0]][this.pos[1]] = 3;
-    } else {
-      if (this.pos[0] === BOARD_HEIGHT - 1) {
-        this.board.earth[this.pos[0]][this.pos[1] + 1] = 3;
-        this.board.earth[this.pos[0]][this.pos[1] - 1] = 3;
-        this.board.earth[this.pos[0]][this.pos[1] + 2] = 3;
-        this.board.earth[this.pos[0]][this.pos[1] - 2] = 3;
-        this.board.earth[this.pos[0] - 1][this.pos[1] + 1] = 3;
-        this.board.earth[this.pos[0] - 1][this.pos[1] - 1] = 3;
-        this.board.earth[this.pos[0] - 1][this.pos[1]] = 3;
-      }
-      this.board.earth[this.pos[0]][this.pos[1]] = 3;
     }
+
   };
 
-  Meteor.prototype.explode = function (type) {
-    if (type === "medium") {
+  Meteor.prototype.clearLanding = function (type) {
 
+    if (type === 'medium' || type === 'big') {
+      this.board.earth[this.pos[0] - 1][this.pos[1] + 1] = 0;
+      this.board.earth[this.pos[0] - 1][this.pos[1] - 1] = 0;
     }
-    if (type === "big") {
-
+    if (type === 'big') {
+      this.board.earth[this.pos[0] - 1][this.pos[1] + 2] = 0;
+      this.board.earth[this.pos[0] - 1][this.pos[1] - 2] = 0;
+      this.board.earth[this.pos[0] - 1][this.pos[1]] = 0;
+      this.board.earth[this.pos[0] - 2][this.pos[1] + 1] = 0;
+      this.board.earth[this.pos[0] - 2][this.pos[1] - 1] = 0;
+      this.board.earth[this.pos[0] - 2][this.pos[1]] = 0;
     }
 
-  }
+  };
 
   var Board = LastDinosaur.Board = function () {
     this.counter = 1;
