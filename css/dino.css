@@ -21,11 +21,19 @@ body{
   font-family: sans-serif;
 }
 
+ul, li {
+  list-style: none;
+  
+}
+
 .game-title {
   font-weight: bold;
   font-size: 36px;
   display: block;
-  margin: 20px;
+  width: 600px;
+  padding: 10px;
+  padding-bottom: 0px;
+  margin: auto;
   text-align: center;
 }
 
@@ -42,7 +50,6 @@ body{
 }
 
 .board, .board > li {
-  list-style: none;
   display: block;
   vertical-align: bottom;
 }

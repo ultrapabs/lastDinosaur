@@ -146,4 +146,9 @@
     this.meteor = new Meteor(this);
   };
 
+  Board.prototype.generateSmartMeteor = function () {
+    this.meteor = new Meteor(this);
+    this.meteor.pos[1] = this.dino.pos[1];
+  };
+
 })();
