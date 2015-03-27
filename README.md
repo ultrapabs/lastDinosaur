@@ -1,8 +1,8 @@
 # The Last Dinosaur
 
-A game of dino survival. [Live Link][dino]
+A game of dino survival. [Live Link][dinolive]
 
-[dino]: http://paul126.github.io/lastDinosaur/html/dino.html
+[dinolive]: http://paul126.github.io/lastDinosaur/html/dino.html
 
 ## Summary
 
