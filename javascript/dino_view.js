@@ -45,14 +45,23 @@
   };
 
   View.prototype.updateScore = function (score) {
-    if (score >= this.bestScore) { this.bestScore = score; }
+    if (this.speed === View.EASY_SPEED) {
+      this.score = Math.floor(score * .7);
+    } else if (this.speed === View.HARD_SPEED){
+      this.score = Math.floor(score * 1.3);
+    } else {
+      this.score = score;
+    }
 
-    $('.score').html('<li class="current">Current Score: ' + score + '</li>');
+    if (this.score >= this.bestScore) { this.bestScore = this.score; }
+
+    $('.score').html('<li class="current">Current Score: ' + this.score + '</li>');
     $('.score').append('<li class="best">Best Score: ' + this.bestScore + '</li>');
   };
 
   View.prototype.resetGame = function () {
     this.board = new LastDinosaur.Board();
+    this.score = 0;
     this.renderEarth(this.board);
 
     this.intervalId = window.setInterval(this.step.bind(this), this.speed);
@@ -61,7 +70,7 @@
   View.prototype.selectDifficulty = function () {
     this.$el.html(this.difficultyMessage());
 
-    $(window).on('keydown', this.userDifficulty.bind(this));
+    $(window).one('keydown', this.userDifficulty.bind(this));
     this.intervalId = window.setInterval(function () {}, 100);
   };
 
@@ -75,9 +84,10 @@
         this.speed = View.HARD_SPEED;
       }
 
-      $(window).off('keydown', this.selectDifficulty.bind(this));
       window.clearInterval(this.intervalId);
       this.resetGame();
+    } else {
+      $(window).one('keydown', this.userDifficulty.bind(this));
     }
   };
 
@@ -89,7 +99,7 @@
     html += '</ul>';
     this.$el.html(html);
 
-    $(window).on('keydown', this.userRestart.bind(this));
+    $(window).one('keydown', this.userRestart.bind(this));
 
     this.intervalId = window.setInterval(function(){}, 100);
   };
@@ -97,25 +107,26 @@
   View.prototype.userRestart = function (event) {
     if (event.keyCode === 80) {
       window.clearInterval(this.intervalId);
-      $(window).off('keydown', this.userRestart.bind(this));
       this.selectDifficulty();
+    } else {
+      $(window).one('keydown', this.userRestart.bind(this));
     }
   };
 
   View.prototype.endMessage = function () {
     var html = '<li>';
-    if (this.board.counter < 300) {
+    if (this.score < 300) {
       html += 'Try harder.';
-    } else if (this.board.counter < 450) {
+    } else if (this.score < 450) {
       html += 'You must improve!';
-    } else if (this.board.counter < 750) {
-      html += 'This is why there are no more dinosaurs.'
-    } else if (this.board.counter < 1000) {
+    } else if (this.score < 750) {
+      html += 'This is why there are no more dinosaurs.';
+    } else if (this.score < 1000) {
       html += "Littlefoot's mom still did better than you.";
     } else {
       html += 'Paleontologists will sing of your endeavors. Rejoice!';
       if ( this.speed > View.HARD_SPEED ) {
-        html += '</li><li>Now try a harder mode.</li>'
+        html += '</li><li>Now try a harder mode.</li>';
       }
     }
 
