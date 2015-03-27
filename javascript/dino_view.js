@@ -10,6 +10,7 @@
 
     $(window).on('keydown', this.moveDino.bind(this));
 
+    this.updateScore(0);
     this.selectDifficulty();
   };
 

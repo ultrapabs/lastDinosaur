@@ -38,10 +38,10 @@ Your score is based on how long you survive and the difficulty level.
 
 ## Image Sources
 
-* [Background][bg]
+* [Game Background][game-bg]
 * [Dinosaur][dino]
 * [Meteor][meteor]
 
-[bg]: http://www.dinosaurworldwide.com/
+[game-bg]: http://www.dinosaurworldwide.com/
 [dino]: http://www.clipartpanda.com/categories/cute-dinosaur-clipart-black-and-white
 [meteor]: http://imgbuddy.com/fireball-transparent-png.asp
