@@ -1,4 +1,4 @@
-html, body, h1, section, ul, li {
+html, body, h1, section, ul, li, p, form {
   background: transparent;
   font-style: inherit;
   font-family: inherit;
@@ -17,14 +17,25 @@ html, body, h1, section, ul, li {
   clear: both;
 }
 
-body{
-  font-family: sans-serif;
-  background: #BEA08C;
-}
-
 ul, li {
   list-style: none;
 
+}
+
+.diff, .play {
+  display: inline;
+}
+
+.diff:hover, .play:hover {
+  font-size: 24px;
+  cursor: pointer;
+  cursor: hand;
+}
+
+
+.last-dinosaur {
+  font-family: sans-serif;
+  background: #BEA08C;
 }
 
 .game {

@@ -71,47 +71,41 @@
   View.prototype.selectDifficulty = function () {
     this.$el.html(this.difficultyMessage());
 
-    $(window).one('keydown', this.userDifficulty.bind(this));
+    $(".diff").click(this.userDifficulty.bind(this));
     this.intervalId = window.setInterval(function () {}, 100);
   };
 
   View.prototype.userDifficulty = function (event) {
-    if (event.keyCode === 49 || event.keyCode === 50 || event.keyCode === 51) {
-      if (event.keyCode === 49) {
+    var diff = $(event.currentTarget).html()
+
+      if (diff === "Easy") {
         this.speed = View.EASY_SPEED;
-      } else if (event.keyCode === 50) {
+      } else if (diff === "Normal") {
         this.speed = View.NORMAL_SPEED;
-      } else if (event.keyCode === 51) {
+      } else if (diff === "Hard") {
         this.speed = View.HARD_SPEED;
       }
 
       window.clearInterval(this.intervalId);
       this.resetGame();
-    } else {
-      $(window).one('keydown', this.userDifficulty.bind(this));
-    }
   };
 
   View.prototype.gameOver = function () {
     window.clearInterval(this.intervalId);
     var html = '<ul class="game-over">';
     html += this.endMessage();
-    html += '<li>Press P to play again.</li>';
+    html += '<li><p class="play">Play Again</p></li>';
     html += '</ul>';
     this.$el.html(html);
 
-    $(window).one('keydown', this.userRestart.bind(this));
+    $(".play").click(this.userRestart.bind(this));
 
     this.intervalId = window.setInterval(function(){}, 100);
   };
 
   View.prototype.userRestart = function (event) {
-    if (event.keyCode === 80) {
-      window.clearInterval(this.intervalId);
-      this.selectDifficulty();
-    } else {
-      $(window).one('keydown', this.userRestart.bind(this));
-    }
+    window.clearInterval(this.intervalId);
+    this.selectDifficulty();
   };
 
   View.prototype.endMessage = function () {
@@ -137,8 +131,10 @@
 
   View.prototype.difficultyMessage = function () {
     var html = '<ul class="game-over">'
-    html += '<li>Press to select your difficulty:</li>';
-    html += '<li>Easy (1) | Normal (2) | Hard (3)</li>';
+    html += '<li>Select your difficulty:</li>';
+    html += '<li><p class="diff">Easy</p> | '
+    html += '<p class="diff">Normal</p> | '
+    html +='<p class="diff">Hard</p></li>';
     html += '</ul>'
     return html;
   };
