@@ -2,7 +2,7 @@
 
 A game of dino survival. [Live Link][dinolive]
 
-[dinolive]: http://paul126.github.io/lastDinosaur/html/dino.html
+[dinolive]: http://ultrapabs.github.io/lastDinosaur/html/dino.html
 
 ## Summary
 
